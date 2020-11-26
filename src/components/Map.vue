@@ -1,26 +1,30 @@
 <template>
   <div id="map-wrap" style="height: 100vh">
     <client-only>
-      <l-map
-        :zoom="16"
-        :center="center"
-        :options="{zoomControl: false}"
-        @ready="onReady"
-        @locationfound="onLocationFound"
-      >
-        <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
-        <l-circle :lat-lng="center" :radius="14" color="#fff" fill-color="#1a74ed" :fill-opacity="1" />
-        <l-circle :lat-lng="center" :radius="15" color="#000" :fill-opacity="0" :weight="1.5" />
+      <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true">
+        <vl-view v-if="center" :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation" />
+        <vl-layer-tile v-if="center">
+          <vl-source-osm />
+        </vl-layer-tile>
 
-        <!-- <l-marker  /> -->
-        <l-marker v-for="p in points" :key="p.id" :lat-lng="[p.coordinates.lat, p.coordinates.lng]">
-          <l-icon
-            :icon-size="[64, 64]"
-            :icon-anchor="[32, 32]"
-            icon-url="boar.png"
-          />
-        </l-marker>
-      </l-map>
+        <!-- <vl-layer-vector v-if="useUrlFunction">
+          <vl-source-vector :url="urlFunction" :strategy-factory="loadingStrategyFactory" />
+        </vl-layer-vector>
+        <vl-layer-vector v-else>
+          <vl-source-vector url="https://openlayers.org/en/latest/examples/data/geojson/countries.geojson" projection="EPSG:4326" />
+        </vl-layer-vector> -->
+
+        <vl-geoloc @update:position="center = $event">
+          <template slot-scope="geoloc">
+            <vl-feature v-if="geoloc.position" id="position-feature">
+              <vl-geom-point :coordinates="geoloc.position" />
+              <vl-style-box>
+                <vl-style-icon src="_media/marker.png" :scale="0.4" :anchor="[0.5, 1]" />
+              </vl-style-box>
+            </vl-feature>
+          </template>
+        </vl-geoloc>
+      </vl-map>
     </client-only>
   </div>
 </template>
@@ -35,19 +39,9 @@ export default {
   },
   data() {
     return {
-      center: [0.99, 0.99],
-      clustercomp: null
-    }
-  },
-  async mounted() {
-    // this.clustercomp = await import('vue2-leaflet-markercluster');
-  },
-  methods: {
-    onReady(map) {
-      map.locate();
-    },
-    onLocationFound(location) {
-      this.center = location.latlng;
+      center: null,
+      zoom: 13,
+      rotation: 0
     }
   }
 }
