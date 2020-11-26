@@ -2,8 +2,8 @@
   <div id="map-wrap" style="height: 100vh">
     <client-only>
       <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true">
-        <vl-view v-if="center" :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation" />
-        <vl-layer-tile v-if="center">
+        <vl-view :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation" />
+        <vl-layer-tile>
           <vl-source-osm />
         </vl-layer-tile>
 
@@ -14,7 +14,7 @@
           <vl-source-vector url="https://openlayers.org/en/latest/examples/data/geojson/countries.geojson" projection="EPSG:4326" />
         </vl-layer-vector> -->
 
-        <vl-geoloc @update:position="center = $event">
+        <vl-geoloc @update:position="() => {}">
           <template slot-scope="geoloc">
             <vl-feature v-if="geoloc.position" id="position-feature">
               <vl-geom-point :coordinates="geoloc.position" />
@@ -39,11 +39,41 @@ export default {
   },
   data() {
     return {
-      center: null,
-      zoom: 13,
+      center: [2159833.468576233, 6786155.512946144],
+      zoom: 7,
       rotation: 0
     }
-  }
+  },
+  methods: {
+    onResize() {
+      if (JSON.stringify(this.center) === JSON.stringify([2159833.468576233, 6786155.512946144]))
+        if (window.innerWidth > 950) {
+          this.zoom = 7;
+        } else if (window.innerWidth > 850) {
+          this.zoom = 6.75;
+        } else if (window.innerWidth > 750) {
+          this.zoom = 6.5;
+        } else if (window.innerWidth > 650) {
+          this.zoom = 6.25;
+        } else if (window.innerWidth > 550) {
+          this.zoom = 6;
+        } else if (window.innerWidth > 450) {
+          this.zoom = 5.75;
+        } else if (window.innerWidth > 350) {
+          this.zoom = 5.5;
+        } else {
+          this.zoom = 5.1;
+        }
+    }
+  },
+  mounted () {
+    window.addEventListener('resize', this.onResize);
+    this.onResize();
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize)
+  },
 }
 </script>
 
