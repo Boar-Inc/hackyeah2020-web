@@ -14,14 +14,9 @@
           <vl-source-vector url="https://openlayers.org/en/latest/examples/data/geojson/countries.geojson" projection="EPSG:4326" />
         </vl-layer-vector> -->
 
-        <vl-geoloc @update:position="() => {}">
+        <vl-geoloc @update:position="x => {center = x; zoom = 13}">
           <template slot-scope="geoloc">
-            <vl-feature v-if="geoloc.position" id="position-feature">
-              <vl-geom-point :coordinates="geoloc.position" />
-              <vl-style-box>
-                <vl-style-icon src="_media/marker.png" :scale="0.4" :anchor="[0.5, 1]" />
-              </vl-style-box>
-            </vl-feature>
+            <MapPoint v-for="p in points" :key="p.id" :pos="geoloc.position" src="geoloc.png" scale=".5" />
           </template>
         </vl-geoloc>
       </vl-map>
