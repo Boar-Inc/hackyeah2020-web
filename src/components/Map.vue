@@ -1,7 +1,7 @@
 <template>
   <div id="map-wrap" style="height: 100vh">
     <client-only>
-      <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true">
+      <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true" data-projection="EPSG:4326">
         <vl-view :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation" />
         <vl-layer-tile v-if="center">
           <vl-source-osm />
@@ -33,7 +33,7 @@ export default {
   },
   data() {
     return {
-      center: [2159833.468576233, 6786155.512946144],
+      center: [19.9450, 50.0647],
       zoom: 7,
       rotation: 0,
       geo: [{
