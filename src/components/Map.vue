@@ -21,7 +21,7 @@
           <MapPoint v-for="p in points" :key="p.id" :pos="[p.location.coordinates[0], p.location.coordinates[1]]" src="boar.png" :scale=".1" />
         </template>
 
-        <vl-geoloc @update:position="x => {if (!geoloc) $emit('update:center', x); $emit('update:geoloc', x); zoom = 13}">
+        <vl-geoloc @update:position="onGeoLoc">
           <template slot-scope="loc">
             <MapPoint :pos="loc.position" src="geoloc.png" :scale=".5" />
           </template>
@@ -106,6 +106,11 @@ export default {
           this.zoom = 5.1;
         }
     },
+    onGeoLoc(x) {
+      if (!this.geoloc) this.$emit('update:center', x);
+      this.$emit('update:geoloc', x);
+      this.zoom = 13;
+    }
   },
   mounted () {
     window.addEventListener('resize', this.onResize);

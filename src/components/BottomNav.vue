@@ -17,9 +17,9 @@
           <IconLabel icon="bx-target-lock" class="icon-btn target-lock" :class="[isCentered && 'active']" @click.native="$emit('recenter')" />
           <div class="layers-btn-wrap">
             <div v-show="openLayersTooltip" class="layers-tooltip">
-              <div class="layer-square layer-satellite" :class="[layers.satellite && 'active']" @click="layers.satellite = !layers.satellite" />
-              <div class="layer-square layer-heatmap" :class="[layers.heatmap && 'active']" @click="layers.heatmap = !layers.heatmap" />
-              <div class="layer-square layer-boars" :class="[layers.boars && 'active']" @click="layers.boars = !layers.boars" />
+              <div class="layer-square layer-satellite" :class="[layers.satellite && 'active']" @click="updateLayers({satellite: !layers.satellite})" />
+              <div class="layer-square layer-heatmap" :class="[layers.heatmap && 'active']" @click="updateLayers({heatmap: !layers.heatmap})" />
+              <div class="layer-square layer-boars" :class="[layers.boars && 'active']" @click="updateLayers({boars: !layers.boars})" />
             </div>
             <IconLabel icon="bxs-layer" class="icon-btn layers-btn" @click.native="openLayersTooltip = !openLayersTooltip" />
           </div>
@@ -32,7 +32,13 @@
             </IconLabel>
           </button>
 
-          <template v-if="picking">
+          <div v-if="picking" class="report-wrap">
+            <div class="report-opts">
+              <div style="margin-bottom: 10px">
+                <FileUpload :files.sync="files" />
+              </div>
+              <Toggle :opts="[{text: 'Żywy', icon: 'bxs-badge-check'}, {text: 'Padły', icon: 'bxs-skull'}, {text: 'Szczątki', icon: 'bxs-bone'}]" :active.sync="condition" />
+            </div>
             <button class="cancel" @click="togglePicking">
               <IconLabel icon="bx-x" />
             </button>
@@ -41,7 +47,7 @@
                 ZGŁOŚ
               </IconLabel>
             </button>
-          </template>
+          </div>
         </div>
         <!-- <button>
 
@@ -62,7 +68,9 @@ export default {
   data() {
     return {
       showMsg: false,
-      openLayersTooltip: false
+      openLayersTooltip: false,
+      condition: 0,
+      files: null
     }
   },
   methods: {
@@ -71,12 +79,18 @@ export default {
       this.$emit('update:picking', val);
     },
     async submit() {
-      await this.$axios.$post('sightings', {
-        lng: this.pos[0],
-        lat: this.pos[1]
+      const formData = new FormData();
+      formData.append('lng', this.pos[0]);
+      formData.append('lat', this.pos[1])
+      formData.append('image', this.files[0]);
+      await this.$axios.$post('sightings', formData, {
+        headers: {'Content-Type': 'multipart/form-data'}
       });
       this.$emit('update:picking', false);
       this.showMsg = true;
+    },
+    updateLayers(x) {
+      this.$emit('update:layers', {...this.layers, ...x})
     }
   }
 }
@@ -135,6 +149,11 @@ button {
     font-size: 1.2em;
     margin-right: 10px;
   }
+}
+.report-wrap {
+  display: flex;
+  flex-grow: 1;
+  pointer-events: all;
 }
 button.sighting {
   flex-grow: 1;
@@ -273,5 +292,25 @@ button.send {
 }
 .layer-satellite {
   background-image: url('/satellite.png');
+}
+.report-wrap {
+  position: relative;
+}
+.report-opts {
+  position: absolute;
+  background: white;
+  border-radius: 15px;
+  padding: 10px;
+  top: -20px;
+  right: 10px;
+  left: 10px;
+  transform: translateY(-100%);
+  @include tablet-up {
+    top: -25px;
+    left: 50%;
+    max-width: 400px;
+    min-width: 320px;
+    transform: translateY(-100%) translateX(-50%);
+  }
 }
 </style>

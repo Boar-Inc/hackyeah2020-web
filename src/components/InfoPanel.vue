@@ -41,9 +41,12 @@ export default {
 
 <style lang="scss" scoped>
 .corner {
-  position: absolute;
+  position: sticky;
   top: 10px;
-  right: 10px;
+  padding-right: 10px;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
   font-family: $display-stack;
   font-size: 1.8rem;
   font-weight: 600;
