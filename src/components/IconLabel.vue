@@ -37,7 +37,7 @@ export default {
 
     & > i + div {
       margin-left: 0;
-      margin-right: 7px;
+      margin-right: 12px;
     }
   }
 }
