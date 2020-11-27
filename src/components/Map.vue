@@ -2,7 +2,7 @@
   <div id="map-wrap" style="height: 100vh">
     <client-only>
       <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true" :controls="false">
-        <vl-view :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation" />
+        <vl-view :zoom.sync="zoom" :center="center" :rotation.sync="rotation" @update:center="x => $emit('update:center', x)" />
         <vl-layer-tile>
           <vl-source-osm />
         </vl-layer-tile>
@@ -14,9 +14,11 @@
           <vl-source-vector url="https://openlayers.org/en/latest/examples/data/geojson/countries.geojson" projection="EPSG:4326" />
         </vl-layer-vector> -->
 
-        <vl-geoloc @update:position="x => {center = x; zoom = 13}">
-          <template slot-scope="geoloc">
-            <MapPoint :pos="geoloc.position" src="geoloc.png" :scale=".5" />
+        <MapPoint v-for="p in points" :key="p" :pos="[p.coordinates.lng, p.coordinates.lat]" src="boar.png" :scale=".08" />
+
+        <vl-geoloc @update:position="x => {if (!geoloc) $emit('update:center', x); $emit('update:geoloc', x); zoom = 13}">
+          <template slot-scope="loc">
+            <MapPoint :pos="loc.position" src="geoloc.png" :scale=".5" />
           </template>
         </vl-geoloc>
       </vl-map>
@@ -31,18 +33,22 @@ export default {
       type: Array,
       default: () => []
     },
-    picking: Boolean
+    picking: Boolean,
+    center: {
+      type: Array,
+      default: () => [2159833.468576233, 6786155.512946144]
+    },
+    geoloc: null
   },
   data() {
     return {
-      center: [2159833.468576233, 6786155.512946144],
       zoom: 7,
       rotation: 0
     }
   },
   methods: {
     onResize() {
-      if (JSON.stringify(this.center) === JSON.stringify([2159833.468576233, 6786155.512946144]))
+      if (!this.geoloc)
         if (window.innerWidth > 950) {
           this.zoom = 7;
         } else if (window.innerWidth > 850) {
