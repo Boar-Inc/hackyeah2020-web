@@ -20,7 +20,7 @@ module.exports = {
   */
   pwa: {
     meta: {
-      name: 'Boar Inc',
+      name: 'BoarInc',
       author: 'Jude (Mateusz Sowiński-Smętny) Hunter, Jakub Kopańko (pcktm)',
       description: 'Boar Inc. is a hackathon project for HackYeah 2020',
       lang: 'pl-PL',
@@ -31,13 +31,10 @@ module.exports = {
       short_name: 'BoarInc.',
       theme_color: '#198840',
       background_color: '#198840'
-    },
-    workbox: {
-      enabled: true,
     }
   },
   head: {
-    title: 'BoarInc.',
+    title: 'BoarInc',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
