@@ -1,7 +1,7 @@
 <template>
   <div id="map-wrap" style="height: 100vh">
     <client-only>
-      <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true">
+      <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true" :controls="false">
         <vl-view :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation" />
         <vl-layer-tile>
           <vl-source-osm />
@@ -16,7 +16,7 @@
 
         <vl-geoloc @update:position="x => {center = x; zoom = 13}">
           <template slot-scope="geoloc">
-            <MapPoint v-for="p in points" :key="p.id" :pos="geoloc.position" src="geoloc.png" scale=".5" />
+            <MapPoint :pos="geoloc.position" src="geoloc.png" :scale=".5" />
           </template>
         </vl-geoloc>
       </vl-map>
@@ -30,7 +30,8 @@ export default {
     points: {
       type: Array,
       default: () => []
-    }
+    },
+    picking: Boolean
   },
   data() {
     return {

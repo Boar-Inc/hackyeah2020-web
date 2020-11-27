@@ -1,7 +1,8 @@
 <template>
   <div>
-    <BottomNav />
-    <Map :points="points" />
+    <BottomNav :picking.sync="picking" />
+    <InfoPanel />
+    <Map :points="points" :picking="picking" />
   </div>
 </template>
 
@@ -9,7 +10,8 @@
 export default {
   data() {
     return {
-      points: []
+      points: [],
+      picking: false
     }
   },
   async fetch() {

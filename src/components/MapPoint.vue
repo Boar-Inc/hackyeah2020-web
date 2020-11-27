@@ -2,7 +2,7 @@
   <vl-feature v-if="pos">
     <vl-geom-point :coordinates="pos" />
     <vl-style-box>
-      <vl-style-icon :src="src" :scale="scale" :anchor="[0.5, 1]" />
+      <vl-style-icon :src="src" :scale="scale" :anchor="[0.5, 0.5]" />
     </vl-style-box>
   </vl-feature>
 </template>
