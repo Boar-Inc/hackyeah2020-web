@@ -7,12 +7,15 @@
           <vl-source-osm />
         </vl-layer-tile>
 
-        <!-- <vl-layer-vector v-if="useUrlFunction">
-          <vl-source-vector :url="urlFunction" :strategy-factory="loadingStrategyFactory" />
+        <vl-layer-heatmap :radius="10">
+          <vl-source-vector :features.sync="geo" />
+        </vl-layer-heatmap>
+
+        <vl-layer-vector>
+          <vl-source-cluster>
+            <vl-source-vector :features.sync="geo" />
+          </vl-source-cluster>
         </vl-layer-vector>
-        <vl-layer-vector v-else>
-          <vl-source-vector url="https://openlayers.org/en/latest/examples/data/geojson/countries.geojson" projection="EPSG:4326" />
-        </vl-layer-vector> -->
 
         <MapPoint v-for="p in points" :key="p" :pos="[p.coordinates.lng, p.coordinates.lat]" src="boar.png" :scale=".08" />
 
