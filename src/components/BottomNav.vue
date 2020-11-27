@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       showMsg: false,
-      openLayersTooltip: true
+      openLayersTooltip: false
     }
   },
   methods: {
@@ -204,12 +204,10 @@ button.send {
 .icon-group > * {
   display: flex;
   font-size: 2.2rem;
-  margin-right: 10px;
+  margin-right: 15px;
   cursor: pointer;
   pointer-events: all;
-  &:not(.laters-tooltip) {
-    filter: drop-shadow(0 1px .5px rgba(0, 0, 0, .7));
-  }
+  filter: drop-shadow(0 3px 0px white);
 }
 .icon-group {
   display: flex;
@@ -253,6 +251,7 @@ button.send {
 
   &.active {
     border: 3px solid $primary;
+    box-shadow: none;
   }
 
   &.active:before {

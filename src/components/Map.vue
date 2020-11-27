@@ -7,7 +7,7 @@
           <vl-source-osm />
         </vl-layer-tile>
 
-        <vl-layer-heatmap v-if="layers.heatmap" :radius="30">
+        <vl-layer-heatmap v-if="layers.heatmap" :radius="15">
           <vl-source-vector :features="points.map(x => ({geometry: {coordinates: x.location.coordinates, type: 'Point'}, type: 'Feature', id: x.id}))" />
         </vl-layer-heatmap>
 
@@ -110,7 +110,7 @@ export default {
   mounted () {
     window.addEventListener('resize', this.onResize);
     this.onResize();
-    console.log(this.points.map(x => ({geometry: {coordinates: x.location.coordinates, type: 'Point'}, type: 'Feature', id: x.id})))
+    // console.log(this.points.map(x => ({geometry: {coordinates: x.location.coordinates, type: 'Point'}, type: 'Feature', id: x.id})))
   },
 
   beforeDestroy() {
