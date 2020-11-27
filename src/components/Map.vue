@@ -17,7 +17,7 @@
           </vl-source-cluster>
         </vl-layer-vector>
 
-        <MapPoint v-for="p in points" :key="p" :pos="[p.coordinates.lng, p.coordinates.lat]" src="boar.png" :scale=".1" />
+        <MapPoint v-for="p in points" :key="p" :pos="[p.location.coordinates[0], p.location.coordinates[1]]" src="boar.png" :scale=".1" />
 
         <vl-geoloc @update:position="x => {if (!geoloc) $emit('update:center', x); $emit('update:geoloc', x); zoom = 13}">
           <template slot-scope="loc">
