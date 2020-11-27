@@ -1,8 +1,8 @@
 <template>
   <div>
-    <BottomNav :picking.sync="picking" :is-centered="isCentered" :pos="center" @recenter="center = [...geoloc]" />
+    <BottomNav :picking.sync="picking" :is-centered="isCentered" :pos="center" :layers="layers" @recenter="center = [...geoloc]" />
     <InfoPanel />
-    <Map :points="points" :picking="picking" :center.sync="center" :geoloc.sync="geoloc" />
+    <Map :points="points" :picking="picking" :center.sync="center" :geoloc.sync="geoloc" :layers="layers" />
   </div>
 </template>
 
@@ -14,6 +14,11 @@ export default {
       picking: false,
       center: [19.615410156250018, 51.82268758254099],
       geoloc: undefined,
+      layers: {
+        satellite: false,
+        heatmap: false,
+        boars: true
+      }
     }
   },
   async fetch() {

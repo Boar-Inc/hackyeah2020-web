@@ -7,17 +7,19 @@
           <vl-source-osm />
         </vl-layer-tile>
 
-        <vl-layer-heatmap :radius="10">
-          <vl-source-vector :features.sync="geo" />
+        <vl-layer-heatmap v-if="layers.heatmap" :radius="30">
+          <vl-source-vector :features="points.map(x => ({geometry: {coordinates: x.location.coordinates, type: 'Point'}, type: 'Feature', id: x.id}))" />
         </vl-layer-heatmap>
 
-        <vl-layer-vector>
+        <!-- <vl-layer-vector>
           <vl-source-cluster>
-            <vl-source-vector :features.sync="geo" />
+            <vl-source-vector :features="points.map(x => ({geometry: {coordinates: x.location.coordinates, type: 'Point'}, type: 'Feature', id: x.id}))" />
           </vl-source-cluster>
-        </vl-layer-vector>
+        </vl-layer-vector> -->
 
-        <MapPoint v-for="p in points" :key="p" :pos="[p.location.coordinates[0], p.location.coordinates[1]]" src="boar.png" :scale=".1" />
+        <template v-if="layers.boars">
+          <MapPoint v-for="p in points" :key="p.id" :pos="[p.location.coordinates[0], p.location.coordinates[1]]" src="boar.png" :scale=".1" />
+        </template>
 
         <vl-geoloc @update:position="x => {if (!geoloc) $emit('update:center', x); $emit('update:geoloc', x); zoom = 13}">
           <template slot-scope="loc">
@@ -40,7 +42,8 @@ export default {
     center: {
       type: Array
     },
-    geoloc: null
+    geoloc: null,
+    layers: Object
   },
   data() {
     return {
@@ -102,11 +105,12 @@ export default {
         } else {
           this.zoom = 5.1;
         }
-    }
+    },
   },
   mounted () {
     window.addEventListener('resize', this.onResize);
     this.onResize();
+    console.log(this.points.map(x => ({geometry: {coordinates: x.location.coordinates, type: 'Point'}, type: 'Feature', id: x.id})))
   },
 
   beforeDestroy() {

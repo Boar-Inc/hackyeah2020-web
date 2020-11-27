@@ -13,7 +13,17 @@
     <img v-show="picking" src="marker.png" class="center-marker">
     <nav>
       <div class="wrap">
-        <IconLabel icon="bx-target-lock" class="target-lock" :class="[isCentered && 'active']" @click.native="$emit('recenter')" />
+        <div class="icon-group">
+          <IconLabel icon="bx-target-lock" class="icon-btn target-lock" :class="[isCentered && 'active']" @click.native="$emit('recenter')" />
+          <div class="layers-btn-wrap">
+            <div v-show="openLayersTooltip" class="layers-tooltip">
+              <div class="layer-square layer-satellite" :class="[layers.satellite && 'active']" @click="layers.satellite = !layers.satellite" />
+              <div class="layer-square layer-heatmap" :class="[layers.heatmap && 'active']" @click="layers.heatmap = !layers.heatmap" />
+              <div class="layer-square layer-boars" :class="[layers.boars && 'active']" @click="layers.boars = !layers.boars" />
+            </div>
+            <IconLabel icon="bxs-layer" class="icon-btn layers-btn" @click.native="openLayersTooltip = !openLayersTooltip" />
+          </div>
+        </div>
 
         <div class="button-group">
           <button v-if="!picking" class="sighting" @click="togglePicking">
@@ -46,11 +56,13 @@ export default {
   props: {
     picking: Boolean,
     pos: Array,
-    isCentered: Boolean
+    isCentered: Boolean,
+    layers: Object
   },
   data() {
     return {
-      showMsg: false
+      showMsg: false,
+      openLayersTooltip: true
     }
   },
   methods: {
@@ -185,26 +197,82 @@ button.send {
   }
 }
 .target-lock {
+  &.active {
+    color: $primary;
+  }
+}
+.icon-group > * {
+  display: flex;
   font-size: 2.2rem;
   margin-right: 10px;
   cursor: pointer;
   pointer-events: all;
+  &:not(.laters-tooltip) {
+    filter: drop-shadow(0 1px .5px rgba(0, 0, 0, .7));
+  }
+}
+.icon-group {
+  display: flex;
   margin-bottom: 20px;
   margin-left: 25px;
-  filter: drop-shadow(0 1px .5px rgba(0, 0, 0, .7));
 
   @include tablet-up {
     margin: 0;
     margin-right: 10px;
     margin-left: -20px;
   }
-
-  &.active {
-    color: $primary;
-  }
 }
 .button-group {
   display: flex;
   flex-grow: 1;
+}
+.layers-tooltip {
+  position: fixed;
+  top: -15px;
+  left: 50%;
+  transform: translateY(-100%) translateX(-50%);
+  background: white;
+  border-radius: 500px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+}
+.layer-square {
+  width: 70px;
+  height: 70px;
+  border-radius: 100%;
+  background: white;
+  border: 2px solid transparent;
+  background-size: contain;
+  box-shadow: 0 0 2px black;
+  position: relative;
+
+  & + & {
+    margin-top: 10px;
+  }
+
+  &.active {
+    border: 3px solid $primary;
+  }
+
+  &.active:before {
+    background: none;
+    border: 2px solid #fff;
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 100%;
+    pointer-events: none;
+  }
+}
+.layer-heatmap {
+  background-image: url('/heatmap.png');
+}
+.layer-satellite {
+  background-image: url('/satellite.png');
 }
 </style>
