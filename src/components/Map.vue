@@ -1,7 +1,7 @@
 <template>
   <div id="map-wrap" style="height: 100vh">
     <client-only>
-      <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true" :controls="false">
+      <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true" :controls="false" data-projection="EPSG:4326">
         <vl-view :zoom.sync="zoom" :center="center" :rotation.sync="rotation" @update:center="x => $emit('update:center', x)" />
         <vl-layer-tile>
           <vl-source-osm />
@@ -17,7 +17,7 @@
           </vl-source-cluster>
         </vl-layer-vector>
 
-        <MapPoint v-for="p in points" :key="p" :pos="[p.coordinates.lng, p.coordinates.lat]" src="boar.png" :scale=".08" />
+        <MapPoint v-for="p in points" :key="p" :pos="[p.coordinates.lng, p.coordinates.lat]" src="boar.png" :scale=".1" />
 
         <vl-geoloc @update:position="x => {if (!geoloc) $emit('update:center', x); $emit('update:geoloc', x); zoom = 13}">
           <template slot-scope="loc">
@@ -38,15 +38,48 @@ export default {
     },
     picking: Boolean,
     center: {
-      type: Array,
-      default: () => [2159833.468576233, 6786155.512946144]
+      type: Array
     },
     geoloc: null
   },
   data() {
     return {
       zoom: 7,
-      rotation: 0
+      rotation: 0,
+      geo: [
+        {
+          type: 'Feature',
+          id: 1,
+          geometry: {
+            type: 'Point',
+            coordinates: [19.615410156250018, 51.82268758254099],
+          },
+        },
+        {
+          type: 'Feature',
+          id: 2,
+          geometry: {
+            type: 'Point',
+            coordinates: [2159833.468576233, 6586155.512946144],
+          },
+        },
+        {
+          type: 'Feature',
+          id: 3,
+          geometry: {
+            type: 'Point',
+            coordinates: [2159833.468576233, 6586155.512946144],
+          },
+        },
+        {
+          type: 'Feature',
+          id: 3,
+          geometry: {
+            type: 'Point',
+            coordinates: [2159833.468576233, 6586155.512946144],
+          },
+        }
+      ]
     }
   },
   methods: {

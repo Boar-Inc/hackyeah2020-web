@@ -26,7 +26,7 @@
             <button class="cancel" @click="togglePicking">
               <IconLabel icon="bx-x" />
             </button>
-            <button class="sighting send" @click="togglePicking">
+            <button class="sighting send" @click="submit">
               <IconLabel icon="bx-send" right>
                 ZGŁOŚ
               </IconLabel>
@@ -58,8 +58,13 @@ export default {
       const val = !this.picking;
       this.$emit('update:picking', val);
     },
-    submit() {
-      this.$axios.$post('')
+    async submit() {
+      await this.$axios.$post('sightings', {
+        lng: this.pos[0],
+        lat: this.pos[1]
+      });
+      this.$emit('update:picking', false);
+      this.showMsg = true;
     }
   }
 }

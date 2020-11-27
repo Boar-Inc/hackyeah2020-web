@@ -12,7 +12,7 @@ export default {
     return {
       points: [],
       picking: false,
-      center: [2159833.468576233, 6786155.512946144],
+      center: [19.615410156250018, 51.82268758254099],
       geoloc: undefined,
     }
   },
@@ -21,8 +21,8 @@ export default {
   },
   computed: {
     isCentered() {
-      console.log(JSON.stringify(this.center) === JSON.stringify(this.geoloc));
-      return JSON.stringify(this.center) === JSON.stringify(this.geoloc);
+      if (!this.geoloc) return false;
+      return (Math.abs(this.center[0] - this.geoloc[0]) < 0.001) && (Math.abs(this.center[1] - this.geoloc[1]) < 0.001);
     }
   }
 }
