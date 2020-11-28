@@ -22,8 +22,12 @@
         </vl-layer-vector>
 
         <!-- HEATMAP -->
-        <vl-layer-heatmap v-if="layers.heatmap" :radius="10">
-          <vl-source-vector :features="points.map(x => ({geometry: {coordinates: x.location.coordinates, type: 'Point'}, type: 'Feature', id: x.id}))" />
+        <vl-layer-heatmap
+          v-if="layers.heatmap"
+          :radius="10"
+          render-mode="image"
+        >
+          <vl-source-vector :features="heatmap" />
         </vl-layer-heatmap>
 
         <!-- TOOLTIP -->
@@ -96,6 +100,11 @@ export default {
           }
         }
       ]
+    }
+  },
+  computed: {
+    heatmap() {
+      return this.points.map(x => ({geometry: {coordinates: x.location.coordinates, type: 'Point'}, type: 'Feature', id: x.id}))
     }
   },
   methods: {
