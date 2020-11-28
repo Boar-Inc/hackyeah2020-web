@@ -1,6 +1,6 @@
 <template>
   <div v-show="!isRemoved" class="tooltip" :style="{'--remove-height': canRemove ? '60px' : '0px'}">
-    <div v-if="point.imageURL" class="image" :style="{'--url': `url('${point.imageURL}')`}" />
+    <div v-if="point.imageURL" class="image" :style="{'--url': `url('/uploads/${point.imageURL}')`}" />
     <div>
       <IconLabel :icon="condition[point.condition].icon">
         {{condition[point.condition].text}}

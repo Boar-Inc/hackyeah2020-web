@@ -51,7 +51,7 @@
             {{formatDate(row.createdOn)}}
           </td>
           <td>
-            <a v-if="row.imageURL" :href="row.imageURL">
+            <a v-if="row.imageURL" :href="'/uploads/' + row.imageURL">
               <IconLabel icon="bx-link-external" />
             </a>
             <IconLabel v-else icon="bx-x" />
