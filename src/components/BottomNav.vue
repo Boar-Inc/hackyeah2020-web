@@ -140,7 +140,7 @@ export default {
               msg: 'Przepraszamy,',
               hint: 'Wygląda na to, że niedawno przyjęliśmy podobne zgłoszenie!'
             },
-            499: {
+            400: {
               msg: 'Duplikat!',
               hint: 'Istnieje już zgłoszenie z tym zdjęciem!'
             }
