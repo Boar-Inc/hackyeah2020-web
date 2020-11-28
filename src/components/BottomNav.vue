@@ -18,7 +18,9 @@
           <div class="layers-btn-wrap">
             <div v-show="openLayersTooltip" class="layers-tooltip">
               <div class="layer-square layer-satellite" :class="[layers.satellite && 'active']" @click="updateLayers({satellite: !layers.satellite})" />
-              <div class="layer-square layer-gminy" :class="[layers.gminy && 'active']" @click="updateLayers({gminy: !layers.gminy})" />
+              <div class="layer-square layer-gminy" :class="[layers.gminy && 'active']" @click="updateLayers({gminy: !layers.gminy})">
+                <!-- gminy -->
+              </div>
               <div class="layer-square layer-heatmap" :class="[layers.heatmap && 'active']" @click="updateLayers({boars: false, heatmap: true})" />
               <div class="layer-square layer-boars" :class="[layers.boars && 'active']" @click="updateLayers({boars: true, heatmap: false})" />
             </div>
@@ -86,7 +88,7 @@ export default {
       openLayersTooltip: false,
       condition: 0,
       files: null,
-      age: 1,
+      age: 5,
       amount: 1
     }
   },
@@ -105,11 +107,16 @@ export default {
       if (this.files)
         formData.append('image', this.files[0]);
       this.files = null;
-      await this.$axios.$post('sightings', formData, {
+      const point = await this.$axios.$post('sightings', formData, {
         headers: {'Content-Type': 'multipart/form-data'}
       });
       this.$emit('update:picking', false);
+      this.$emit('submit', point);
       this.showMsg = true;
+      this.age = 5;
+      this.amount = 1;
+      this.condition = 0;
+      this.$store.commit('user/submitSighting', point.id);
     },
     updateLayers(x) {
       this.$emit('update:layers', {...this.layers, ...x})
@@ -134,6 +141,10 @@ export default {
   bottom: 0;
   z-index: 9999999999;
   pointer-events: none;
+
+  @media print {
+    display: none;
+  }
 }
 nav {
   position: fixed;
@@ -285,6 +296,12 @@ button.send {
   background-size: contain;
   box-shadow: 0 0 2px black;
   position: relative;
+  @include flex-center(vh);
+  padding-top: 20px;
+  font-size: 1rem;
+  font-family: $display-stack;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px white;
 
   & + & {
     margin-top: 10px;
@@ -308,6 +325,15 @@ button.send {
     border-radius: 100%;
     pointer-events: none;
   }
+
+  &:nth-last-child(2), &:nth-last-child(2).active:before {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  &:nth-last-child(1), &:nth-last-child(1).active:before {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
 }
 .layer-heatmap {
   background-image: url('/heatmap.png');
@@ -317,6 +343,9 @@ button.send {
 }
 .layer-gminy {
   background-image: url('/gminy.png');
+}
+.layer-boars {
+  background-image: url('/boars.png');
 }
 .report-wrap {
   position: relative;
@@ -330,6 +359,7 @@ button.send {
   right: 10px;
   left: 10px;
   transform: translateY(-100%);
+  border: 2px solid black;
   @include tablet-up {
     top: -25px;
     left: 50%;

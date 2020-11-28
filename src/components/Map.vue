@@ -16,17 +16,19 @@
           <vl-source-osm />
         </vl-layer-tile>
 
+        <!-- GMINY -->
         <vl-layer-vector v-if="layers.gminy && gminy" render-mode="image" :declutter="true" :update-while-interacting="true">
           <vl-source-vector :features="gminy" />
         </vl-layer-vector>
 
+        <!-- HEATMAP -->
         <vl-layer-heatmap v-if="layers.heatmap" :radius="10">
           <vl-source-vector :features="points.map(x => ({geometry: {coordinates: x.location.coordinates, type: 'Point'}, type: 'Feature', id: x.id}))" />
         </vl-layer-heatmap>
 
-        <!-- tooltip -->
+        <!-- TOOLTIP -->
         <vl-overlay v-if="tooltip.position" :position="tooltip.position" style="height: 0">
-          <Tooltip v-if="tooltip.point" :point="tooltip.point" />
+          <Tooltip v-if="tooltip.point" :point="tooltip.point" @remove="removePoint" />
         </vl-overlay>
 
         <!-- <vl-layer-vector>
@@ -36,9 +38,18 @@
         </vl-layer-vector> -->
 
         <template v-if="layers.boars">
-          <MapPoint v-for="p in points" :key="p.id" :pos="[p.location.coordinates[0], p.location.coordinates[1]]" :src="`pin-${p.condition}.png`" :scale="0.85" />
+          <MapPoint
+            v-for="p in points"
+            :key="p.id"
+            :properties="{id: p.id}"
+            :pos="[p.location.coordinates[0], p.location.coordinates[1]]"
+            :src="`pin-${p.condition}.png`"
+            :scale="0.85"
+            :anchor="[.5, 1]"
+          />
         </template>
 
+        <!-- GEOLOC -->
         <vl-geoloc @update:position="onGeoLoc">
           <template slot-scope="loc">
             <MapPoint :pos="loc.position" src="geoloc.png" :scale=".5" />
@@ -50,7 +61,6 @@
 </template>
 
 <script>
-// import * as ol from 'ol';
 
 export default {
   props: {
@@ -89,6 +99,31 @@ export default {
     }
   },
   methods: {
+    removePoint(x) {
+      const idx = this.points.findIndex(y => y.id === x);
+      const pts = [...this.points];
+      pts.splice(idx, 1);
+      this.$emit('update:points', pts);
+    },
+    // async newfeature(feature, id) {
+    //   const Format = (await import('ol/format/GeoJSON')).default;
+    //   const f = new Format().readFeatures(feature);
+
+    //   f[0].set('id', id);
+    //   console.log(f[0].get('id'));
+    // console.log((await import('ol/Feature')));
+    // const ft = ((await import('ol/Feature')))({
+    //   type: 'Feature',
+    //   id: 1,
+    //   geometry: {
+    //     type: 'Point',
+    //     coordinates: [19.615410156250018, 51.82268758254099],
+    //   }
+    // });
+    // ft.set('name', 'yeet');
+    // console.log(ft);
+    // return ft;
+    // },
     onResize() {
       if (!this.geoloc)
         if (window.innerWidth > 950) {
@@ -128,11 +163,11 @@ export default {
         this.mapCursor = 'default'
       }
     },
-    onMapClick({pixel}) {
+    async onMapClick({pixel}) {
       const hitFeature = this.$refs.map.forEachFeatureAtPixel(pixel, feature => feature);
 
       if (hitFeature) {
-        const id = hitFeature.values_?.geometry?.values_?.id;
+        const id = hitFeature.get('id');
         if (!id) {
           this.mapCursor = 'default';
           this.tooltip.position = null;
@@ -141,13 +176,13 @@ export default {
         }
         const map = this.$refs.map;
         this.mapCursor = 'pointer'
-        this.tooltip.position = window.ol.proj.transform(hitFeature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326');
+        this.tooltip.position = (await import('ol/proj')).transform(hitFeature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326');
         if (!this.tooltipFix)
           setTimeout(() => {
-            this.tooltip.point = this.points.find(x => x.id);
+            this.tooltip.point = this.points.find(x => x.id === id);
             this.tooltipFix = true;
           }, 200);
-        else (this.tooltip.point = this.points.find(x => x.id));
+        else (this.tooltip.point = this.points.find(x => x.id === id));
         // this.currentName = hitFeature.get('name')
       } else {
         this.mapCursor = 'default'
@@ -166,6 +201,16 @@ export default {
   mounted () {
     window.addEventListener('resize', this.onResize);
     this.onResize();
+    // this.newfeature(
+    //   {
+    //     type: 'Feature',
+    //     id: 1,
+    //     geometry: {
+    //       type: 'Point',
+    //       coordinates: [19.615410156250018, 51.82268758254099],
+    //     }
+    //   }, 'yabadaya');
+    // console.log(ol);
     // setTimeout(() => {
     //   this.tooltip.position = this.center;
     //   this.tooltip.point = {

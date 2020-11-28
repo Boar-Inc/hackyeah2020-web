@@ -51,7 +51,7 @@ module.exports = {
     ],
     script: [
       {
-        src: 'https://unpkg.com/openlayers@4.6.5/dist/ol.js'
+        // src: 'https://unpkg.com/openlayers@4.6.5/dist/ol.js'
       }
     ]
   },
@@ -130,6 +130,6 @@ module.exports = {
   },
 
   build: {
-    transpile: ['vuelayers']
+    transpile: ['vuelayers', 'ol']
   }
 }

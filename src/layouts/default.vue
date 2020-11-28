@@ -37,4 +37,11 @@ export default {
 
 <style lang="scss">
 @import "~/styles/layouts.scss";
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+    break-inside: avoid;
+  }
+}
 </style>

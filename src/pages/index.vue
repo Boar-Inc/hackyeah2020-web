@@ -1,8 +1,15 @@
 <template>
   <div>
-    <BottomNav :picking.sync="picking" :is-centered="isCentered" :pos="center" :layers.sync="layers" @recenter="center = [...geoloc]" />
+    <BottomNav
+      :picking.sync="picking"
+      :is-centered="isCentered"
+      :pos="center"
+      :layers.sync="layers"
+      @recenter="center = [...geoloc]"
+      @submit="x => points = [...points, x]"
+    />
     <InfoPanel />
-    <Map :points="points" :picking="picking" :center.sync="center" :geoloc.sync="geoloc" :layers.sync="layers" />
+    <Map :points.sync="points" :picking="picking" :center.sync="center" :geoloc.sync="geoloc" :layers.sync="layers" />
   </div>
 </template>
 

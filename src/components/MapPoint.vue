@@ -1,8 +1,8 @@
 <template>
-  <vl-feature v-if="pos">
+  <vl-feature v-if="pos" :properties="properties">
     <vl-geom-point :coordinates="pos" />
     <vl-style-box>
-      <vl-style-icon :src="src" :scale="scale" :anchor="[0.5, 0.5]" />
+      <vl-style-icon :src="src" :scale="scale" :anchor="anchor || [0.5, 0.5]" />
     </vl-style-box>
   </vl-feature>
 </template>
@@ -16,7 +16,8 @@ export default {
       default: 0.4,
       type: Number
     },
-    tooltip: Boolean
+    properties: Object,
+    anchor: Array
   }
 }
 </script>

@@ -53,6 +53,9 @@ export default {
   cursor: pointer;
 }
 .panel {
+  @media print {
+    display: none;
+  }
   position: fixed;
   top: 0;
   right: 0;
