@@ -36,7 +36,7 @@
         </vl-layer-vector> -->
 
         <template v-if="layers.boars">
-          <MapPoint v-for="p in points" :key="p.id" :pos="[p.location.coordinates[0], p.location.coordinates[1]]" :src="`pin-${p.condition}.png`" :scale=".08" />
+          <MapPoint v-for="p in points" :key="p.id" :pos="[p.location.coordinates[0], p.location.coordinates[1]]" :src="`pin-${p.condition}.png`" :scale="0.85" />
         </template>
 
         <vl-geoloc @update:position="onGeoLoc">
