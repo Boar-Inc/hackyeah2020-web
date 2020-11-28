@@ -18,8 +18,9 @@
           <div class="layers-btn-wrap">
             <div v-show="openLayersTooltip" class="layers-tooltip">
               <div class="layer-square layer-satellite" :class="[layers.satellite && 'active']" @click="updateLayers({satellite: !layers.satellite})" />
-              <div class="layer-square layer-heatmap" :class="[layers.heatmap && 'active']" @click="updateLayers({heatmap: !layers.heatmap})" />
-              <div class="layer-square layer-boars" :class="[layers.boars && 'active']" @click="updateLayers({boars: !layers.boars})" />
+              <div class="layer-square layer-gminy" :class="[layers.gminy && 'active']" @click="updateLayers({gminy: !layers.gminy})" />
+              <div class="layer-square layer-heatmap" :class="[layers.heatmap && 'active']" @click="updateLayers({boars: false, heatmap: true})" />
+              <div class="layer-square layer-boars" :class="[layers.boars && 'active']" @click="updateLayers({boars: true, heatmap: false})" />
             </div>
             <IconLabel icon="bxs-layer" class="icon-btn layers-btn" @click.native="openLayersTooltip = !openLayersTooltip" />
           </div>
@@ -36,6 +37,20 @@
             <div class="report-opts">
               <div style="margin-bottom: 10px">
                 <FileUpload :files.sync="files" />
+              </div>
+              <div style="display: flex; justify-content: space-around; margin-bottom: 10px; font-size: 1.1rem">
+                <div style="display: flex">
+                  <p style="margin-right: 5px">
+                    Liczba
+                  </p>
+                  <NumberInput :val.sync="amount" />
+                </div>
+                <div style="display: flex">
+                  <p style="margin-right: 5px">
+                    Wiek
+                  </p>
+                  <NumberInput :val.sync="age" />
+                </div>
               </div>
               <Toggle :opts="[{text: 'Żywy', icon: 'bxs-badge-check'}, {text: 'Padły', icon: 'bxs-skull'}, {text: 'Szczątki', icon: 'bxs-bone'}]" :active.sync="condition" />
             </div>
@@ -70,7 +85,9 @@ export default {
       showMsg: false,
       openLayersTooltip: false,
       condition: 0,
-      files: null
+      files: null,
+      age: 1,
+      amount: 1
     }
   },
   methods: {
@@ -81,8 +98,13 @@ export default {
     async submit() {
       const formData = new FormData();
       formData.append('lng', this.pos[0]);
-      formData.append('lat', this.pos[1])
-      formData.append('image', this.files[0]);
+      formData.append('lat', this.pos[1]);
+      formData.append('condition', ['alive', 'dead', 'remains'][this.condition]);
+      formData.append('age', +this.age);
+      formData.append('amount', +this.amount);
+      if (this.files)
+        formData.append('image', this.files[0]);
+      this.files = null;
       await this.$axios.$post('sightings', formData, {
         headers: {'Content-Type': 'multipart/form-data'}
       });
@@ -292,6 +314,9 @@ button.send {
 }
 .layer-satellite {
   background-image: url('/satellite.png');
+}
+.layer-gminy {
+  background-image: url('/gminy.png');
 }
 .report-wrap {
   position: relative;

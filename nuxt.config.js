@@ -46,8 +46,13 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/static/favicon.ico' },
       // Montserrat
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Work+Sans:wght@400&family=Roboto:wght@400;500&display=swap' },
-      {rel: 'stylesheet', href: 'https://unpkg.com/boxicons@2.0.5/css/boxicons.min.css'},
+      {rel: 'stylesheet', href: 'https://unpkg.com/boxicons@latest/css/boxicons.min.css'},
       {rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css'}
+    ],
+    script: [
+      {
+        src: 'https://unpkg.com/openlayers@4.6.5/dist/ol.js'
+      }
     ]
   },
 

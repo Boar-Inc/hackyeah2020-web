@@ -15,7 +15,8 @@ export default {
     scale: {
       default: 0.4,
       type: Number
-    }
+    },
+    tooltip: Boolean
   }
 }
 </script>

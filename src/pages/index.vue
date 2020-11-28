@@ -17,7 +17,8 @@ export default {
       layers: {
         satellite: false,
         heatmap: true,
-        boars: false
+        boars: false,
+        gminy: false
       }
     }
   },
