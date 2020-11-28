@@ -27,7 +27,7 @@
           </div>
         </div>
 
-        <div class="button-group">
+        <div v-if="!isSubmitting" class="button-group">
           <button v-if="!picking" class="sighting" @click="togglePicking">
             <IconLabel icon="bxs-error-circle">
               ZGŁOŚ DZIKA!
@@ -65,6 +65,11 @@
             </button>
           </div>
         </div>
+        <div v-else class="button-group">
+          <button class="sighting" style="opacity: .7; cursor: default">
+            <IconLabel icon="bx-loader-alt bx-spin" />
+          </button>
+        </div>
         <!-- <button>
 
         </button> -->
@@ -94,7 +99,8 @@ export default {
       condition: 0,
       files: null,
       age: 5,
-      amount: 1
+      amount: 1,
+      isSubmitting: false
     }
   },
   computed: {
@@ -119,18 +125,24 @@ export default {
       if (this.$nuxt.isOnline) {
         let point = null;
         try {
+          this.isSubmitting = true;
           point = await this.$axios.$post('sightings', formData, {
             headers: {'Content-Type': 'multipart/form-data'}
           });
         } catch (err) {
+          this.isSubmitting = false;
           const msgs = {
             403: {
               msg: 'Przepraszamy, to niemożliwe.',
               hint: 'Zgłaszanie dzików poza terenem Polski jest niedozwolone!'
             },
             409: {
-              msg: 'Duplikat!',
+              msg: 'Przepraszamy,',
               hint: 'Wygląda na to, że niedawno przyjęliśmy podobne zgłoszenie!'
+            },
+            499: {
+              msg: 'Duplikat!',
+              hint: 'Istnieje już zgłoszenie z tym zdjęciem!'
             }
           }
 
@@ -154,6 +166,7 @@ export default {
           } else throw err;
           return;
         }
+        this.isSubmitting = false;
         this.msg = {
           show: true,
           msg: 'Dziękujemy',

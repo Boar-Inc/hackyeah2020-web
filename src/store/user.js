@@ -1,9 +1,16 @@
 export const state = () => ({
-  sightings: ['c31d1071-3524-458f-bbb9-b0f47a7891fc']
+  sightings: [],
+  requests: []
 });
 
 export const mutations = {
   submitSighting(state, id) {
     state.sightings = [...state.sightings, id]
+  },
+  pushRequest(state, req) {
+    state.requests = [...state.requests, req];
+  },
+  clearRequests(state) {
+    state.requests = [];
   }
 }
