@@ -11,7 +11,7 @@
     </div>
 
     <h1>Raport</h1>
-    <h2>Zestawienie występowania dzików w każdej gminie.</h2>
+    <h2>Zestawienie zgłoszeń w każdej gminie.</h2>
 
     <button class="gen-button" @click="download">
       <IconLabel icon="bxs-right-arrow-alt" right>

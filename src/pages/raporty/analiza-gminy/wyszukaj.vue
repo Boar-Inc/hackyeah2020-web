@@ -11,7 +11,7 @@
     </div>
 
     <h1>Raport</h1>
-    <h2>Analiza występowania dzików w obrębie jednej gminy.</h2>
+    <h2>Analiza zgłoszeń w obrębie jednej gminy.</h2>
     <h2>Wyszukaj gminę (nazwa lub kod terytorialny), aby kontynuować.</h2>
 
     <div class="search-bar-wrap">

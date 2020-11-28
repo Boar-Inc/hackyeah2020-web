@@ -11,7 +11,7 @@
     </div>
 
     <h1>Raport</h1>
-    <h2>Analiza występowania dzików w obrębie gminy {{data ? data.name : ''}}</h2>
+    <h2>Analiza zgłoszeń w obrębie gminy {{data ? data.name : ''}}</h2>
 
     <button class="gen-button" @click="download">
       <IconLabel icon="bxs-right-arrow-alt" right>

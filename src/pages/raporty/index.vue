@@ -11,11 +11,11 @@
     </div>
 
     <h1>Raporty</h1>
-    <h2>Z łatwością dokonaj analizy populacji i występowania dzików w Polsce.</h2>
+    <h2>Z łatwością dokonaj analizy zgłoszeń i występowania dzików w Polsce.</h2>
     <ul>
       <li>
         <div>
-          Zestawienie występowania dzików w każdej gminie
+          Zestawienie zgłoszeń w każdej gminie
         </div>
         <nuxt-link to="/raporty/zestawienie-gmin">
           <IconLabel icon="bxs-right-arrow-alt" right>
@@ -25,7 +25,7 @@
       </li>
       <li>
         <div>
-          Analiza występowania dzików w obrębie jednej gminy
+          Analiza zgłoszeń w obrębie jednej gminy
         </div>
         <nuxt-link to="/raporty/analiza-gminy/wyszukaj">
           <IconLabel icon="bxs-right-arrow-alt" right>
