@@ -42,7 +42,7 @@
             </IconLabel>
           </td>
           <td>
-            {{row.amount}} {{polishPlural('dzik', 'dziki', 'dzików', row.age)}}
+            {{row.amount}} {{polishPlural('dzik', 'dziki', 'dzików', row.amount)}}
           </td>
           <td>
             {{row.age}} {{polishPlural('rok', 'lata', 'lat', row.age)}}

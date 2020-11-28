@@ -157,6 +157,7 @@ export default {
     onGeoLoc(x) {
       if (!this.geoloc) this.$emit('update:center', x);
       this.$emit('update:geoloc', x);
+      this.$emit('update:layers', {...this.layers, heatmap: false, boars: true});
       this.zoom = 13;
     },
     async getGminy() {
