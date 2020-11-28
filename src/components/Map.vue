@@ -238,6 +238,19 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+.ol-zoom {
+  // display: none;
+  .ol-zoom-in, .ol-zoom-out {
+    & {
+      background: scale-color($color: $primary, $alpha: -20%)
+    }
+    &:hover, &:focus {
+      background: $primary;
+    }
+  }
+  @include tablet-up {
+    // display:
+  }
+}
 </style>

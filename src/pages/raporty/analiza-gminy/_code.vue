@@ -14,7 +14,7 @@
     <h2>Analiza zgłoszeń w obrębie gminy {{data ? data.name : ''}}</h2>
 
     <button class="gen-button" @click="download">
-      <IconLabel icon="bxs-right-arrow-alt" right>
+      <IconLabel icon="bxs-download" right>
         Pobierz skoroszyt CSV
       </IconLabel>
     </button>

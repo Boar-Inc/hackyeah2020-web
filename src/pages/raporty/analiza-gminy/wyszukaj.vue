@@ -115,6 +115,7 @@ export default {
 }
 .search-bar {
   margin-left: 10px;
+  flex-grow: 1;
 }
 h1 {
   font-size: 2rem;

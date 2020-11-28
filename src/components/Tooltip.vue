@@ -1,5 +1,6 @@
 <template>
   <div v-show="!isRemoved" class="tooltip" :style="{'--remove-height': canRemove ? '60px' : '0px'}">
+    <div class="image" :style="{'--url': `url('${point.imageURL || 'https://upload.wikimedia.org/wikipedia/commons/d/d1/20160208054949%21Wildschein%2C_N%C3%A4he_Pulverstampftor_%28cropped%29.jpg'}')`}" />
     <div>
       <IconLabel :icon="condition[point.condition].icon">
         {{condition[point.condition].text}}
@@ -107,16 +108,33 @@ export default {
 
 <style lang="scss">
 .tooltip {
-  transform: translateX(-50%) translateY(calc(-50% - 130px - (var(--remove-height))/2));
+  transform: translateX(-50%) translateY(calc(-100% + -60px));
   background: white;
   border-radius: 10px;
   font-size: 1.3rem;
   padding: 15px;
   min-width: 250px;
+  white-space: nowrap;
   // height: 500px;
   // display: none;
+  filter: drop-shadow(0px 2px 1px rgba(0, 0, 0, .3));
   & > div + div {
     margin-top: 10px;
+  }
+  &:before{
+    content:'';
+    display:block;
+    width:0;
+    height:0;
+    position:absolute;
+
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid white;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+
+    bottom: 0;
   }
 }
 .remove-btn {
@@ -154,5 +172,12 @@ export default {
   padding: 0 10px;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
+}
+.image {
+  height: 150px;
+  border-radius: 5px;
+  background-image: var(--url);
+  background-size: cover;
+  background-position: center;
 }
 </style>

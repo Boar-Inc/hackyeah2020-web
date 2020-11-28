@@ -20,30 +20,30 @@ module.exports = {
   */
   pwa: {
     meta: {
-      name: 'BoarInc',
+      name: 'Dzika Akcja',
       author: 'Jude (Mateusz Sowiński-Smętny) Hunter, Jakub Kopańko (pcktm)',
-      description: 'Boar Inc. is a hackathon project for HackYeah 2020',
+      description: 'Dzika Akcja is a hackathon project for HackYeah 2020',
       lang: 'pl-PL',
     },
     manifest: {
-      name: 'BoarInc',
+      name: 'Dzika Akcja',
       lang: 'pl',
-      short_name: 'BoarInc.',
+      short_name: 'Dzika Akcja',
       theme_color: '#198840',
       background_color: '#198840'
     }
   },
   head: {
-    title: 'BoarInc',
+    title: 'Dzika Akcja',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      {hid: 'description', name: 'description', content: 'BoarInc. is a hackathon project for HackYeah 2020' },
+      {hid: 'description', name: 'description', content: 'Dzika Akcja is a hackathon project for HackYeah 2020' },
       {hid: 'author', name: 'author', content: 'Jude (Mateusz Sowiński) Hunter, Jakub Kopańko (pcktm)'},
       {hid: 'keywords', name: 'keywords', content: 'boar, asf, hackyeah2020'}
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/static/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/icon.png' },
       // Montserrat
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Work+Sans:wght@400&family=Roboto:wght@400;500&display=swap' },
       {rel: 'stylesheet', href: 'https://unpkg.com/boxicons@latest/css/boxicons.min.css'},

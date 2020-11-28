@@ -1,10 +1,10 @@
 <template>
   <div class="page-wrap">
-    <aside v-if="showMsg" class="msg">
-      <h1>Dziękujemy!</h1>
-      <h2>Twoje zgłoszenie zostało przyjęte</h2>
-      <button @click="showMsg = false">
-        <IconLabel icon="bx-check">
+    <aside v-if="msg.show" class="msg" :class="[msg.isError && 'error']">
+      <h1>{{msg.msg}}</h1>
+      <h2>{{msg.hint}}</h2>
+      <button @click="msg.show = false">
+        <IconLabel :icon="msg.icon">
           OK
         </IconLabel>
       </button>
@@ -83,7 +83,13 @@ export default {
   },
   data() {
     return {
-      showMsg: false,
+      msg: {
+        show: false,
+        msg: 'Dziękujemy',
+        hint: 'Twoje zgłoszenie zostało przyjęte',
+        icon: 'bx-check',
+        isError: false,
+      },
       openLayersTooltip: false,
       condition: 0,
       files: null,
@@ -106,12 +112,52 @@ export default {
       if (this.files)
         formData.append('image', this.files[0]);
       this.files = null;
-      const point = await this.$axios.$post('sightings', formData, {
-        headers: {'Content-Type': 'multipart/form-data'}
-      });
+      let point = null;
+      try {
+        point = await this.$axios.$post('sightings', formData, {
+          headers: {'Content-Type': 'multipart/form-data'}
+        });
+      } catch (err) {
+        const msgs = {
+          403: {
+            msg: 'Przepraszamy, to niemożliwe.',
+            hint: 'Zgłaszanie dzików poza terenem Polski jest niedozwolone!'
+          },
+          409: {
+            msg: 'Przepraszamy,',
+            hint: 'Wygląda na to, że niedawno przyjęliśmy podobne zgłoszenie!'
+          }
+        }
+
+        this.$emit('update:picking', false);
+
+        if (err.response?.status && err.response.status in msgs) {
+          this.msg = {
+            show: true,
+            isError: true,
+            icon: 'bxs-sad',
+            ...msgs[err.response.status]
+          }
+        } else if (err.response?.status) {
+          this.msg = {
+            show: true,
+            isError: true,
+            icon: 'bx-check',
+            msg: 'Przepraszamy, coś poszło nie tak',
+            hint: 'Prosimy spróbować ponownie później'
+          }
+        } else throw err;
+        return;
+      }
+      this.msg = {
+        show: true,
+        msg: 'Dziękujemy',
+        hint: 'Twoje zgłoszenie zostało przyjęte',
+        icon: 'bx-check',
+        isError: false,
+      };
       this.$emit('update:picking', false);
       this.$emit('submit', point);
-      this.showMsg = true;
       this.age = 5;
       this.amount = 1;
       this.condition = 0;
@@ -240,11 +286,20 @@ button.send {
   }
   h2 {
     margin-bottom: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
   }
   button {
     color: black;
     background: white;
     width: 100%;
+  }
+  &.error {
+    background: black;
+    button {
+      background: white;
+    };
   }
 }
 .target-lock {
