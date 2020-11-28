@@ -75,7 +75,7 @@ module.exports = {
     {src: '@/plugins/infscroll.js', ssr: false},
     {src: '@/plugins/portal.js', ssr: true},
     {src: '@/plugins/vuexpersist.js', ssr: false},
-    {src: '~plugins/vuelayers.js', ssr: false}
+    {src: '~plugins/vuelayers.js', ssr: false},
   ],
   /*
   ** Auto import components

@@ -97,6 +97,11 @@ export default {
       amount: 1
     }
   },
+  computed: {
+    storedRequests() {
+      return this.$store.state.user.requests;
+    }
+  },
   methods: {
     togglePicking() {
       const val = !this.picking;
@@ -111,60 +116,101 @@ export default {
       formData.append('amount', +this.amount);
       if (this.files)
         formData.append('image', this.files[0]);
-      this.files = null;
-      let point = null;
-      try {
-        point = await this.$axios.$post('sightings', formData, {
-          headers: {'Content-Type': 'multipart/form-data'}
-        });
-      } catch (err) {
-        const msgs = {
-          403: {
-            msg: 'Przepraszamy, to niemożliwe.',
-            hint: 'Zgłaszanie dzików poza terenem Polski jest niedozwolone!'
-          },
-          409: {
-            msg: 'Przepraszamy,',
-            hint: 'Wygląda na to, że niedawno przyjęliśmy podobne zgłoszenie!'
+      if (this.$nuxt.isOnline) {
+        let point = null;
+        try {
+          point = await this.$axios.$post('sightings', formData, {
+            headers: {'Content-Type': 'multipart/form-data'}
+          });
+        } catch (err) {
+          const msgs = {
+            403: {
+              msg: 'Przepraszamy, to niemożliwe.',
+              hint: 'Zgłaszanie dzików poza terenem Polski jest niedozwolone!'
+            },
+            409: {
+              msg: 'Duplikat!',
+              hint: 'Wygląda na to, że niedawno przyjęliśmy podobne zgłoszenie!'
+            }
           }
+
+          this.$emit('update:picking', false);
+
+          if (err.response?.status && err.response.status in msgs) {
+            this.msg = {
+              show: true,
+              isError: true,
+              icon: 'bxs-sad',
+              ...msgs[err.response.status]
+            }
+          } else if (err.response?.status) {
+            this.msg = {
+              show: true,
+              isError: true,
+              icon: 'bx-check',
+              msg: 'Przepraszamy, coś poszło nie tak',
+              hint: 'Prosimy spróbować ponownie później'
+            }
+          } else throw err;
+          return;
         }
-
-        this.$emit('update:picking', false);
-
-        if (err.response?.status && err.response.status in msgs) {
-          this.msg = {
-            show: true,
-            isError: true,
-            icon: 'bxs-sad',
-            ...msgs[err.response.status]
-          }
-        } else if (err.response?.status) {
-          this.msg = {
-            show: true,
-            isError: true,
-            icon: 'bx-check',
-            msg: 'Przepraszamy, coś poszło nie tak',
-            hint: 'Prosimy spróbować ponownie później'
-          }
-        } else throw err;
-        return;
+        this.msg = {
+          show: true,
+          msg: 'Dziękujemy',
+          hint: 'Twoje zgłoszenie zostało przyjęte',
+          icon: 'bx-check',
+          isError: false,
+        };
+        this.$emit('submit', point);
+        this.$store.commit('user/submitSighting', point.id)
+      } else {
+        this.msg = {
+          show: true,
+          msg: 'Tryb offline',
+          hint: 'Wyślemy twoje zgłoszenie jak tylko zostanie przywrócona łączność z Internetem',
+          icon: 'bx-check',
+          isError: false,
+        };
+        this.$store.commit('user/pushRequest', {
+          lng: this.pos[0],
+          lat: this.pos[1],
+          condition: ['alive', 'dead', 'remains'][this.condition],
+          age: +this.age,
+          amount: +this.amount,
+          image: this.files?.[0]
+        })
       }
-      this.msg = {
-        show: true,
-        msg: 'Dziękujemy',
-        hint: 'Twoje zgłoszenie zostało przyjęte',
-        icon: 'bx-check',
-        isError: false,
-      };
       this.$emit('update:picking', false);
-      this.$emit('submit', point);
       this.age = 5;
       this.amount = 1;
       this.condition = 0;
-      this.$store.commit('user/submitSighting', point.id);
+      this.files = null;
     },
     updateLayers(x) {
       this.$emit('update:layers', {...this.layers, ...x})
+    }
+  },
+  watch: {
+    '$nuxt.isOnline': {
+      async handler(val) {
+        if (process.client) {
+          if (val) {
+            for (const req of this.storedRequests) {
+              const formdata = new FormData();
+              for (const [k, v] of Object.entries(req)) {
+                if (v)
+                  formdata.append(k, v);
+              }
+              try {
+                this.$emit('submit', await this.$axios.$post('sightings', formdata, {
+                  headers: {'Content-Type': 'multipart/form-data'}
+                }));
+              } catch (err) { }
+            }
+            this.$store.commit('user/clearRequests')
+          }
+        }
+      }
     }
   }
 }

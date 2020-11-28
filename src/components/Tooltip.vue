@@ -1,6 +1,6 @@
 <template>
   <div v-show="!isRemoved" class="tooltip" :style="{'--remove-height': canRemove ? '60px' : '0px'}">
-    <div class="image" :style="{'--url': `url('${point.imageURL || 'https://upload.wikimedia.org/wikipedia/commons/d/d1/20160208054949%21Wildschein%2C_N%C3%A4he_Pulverstampftor_%28cropped%29.jpg'}')`}" />
+    <div v-if="point.imageURL" class="image" :style="{'--url': `url('${point.imageURL}')`}" />
     <div>
       <IconLabel :icon="condition[point.condition].icon">
         {{condition[point.condition].text}}
