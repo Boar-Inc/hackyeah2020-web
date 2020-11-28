@@ -53,10 +53,10 @@ export default {
   }
 
   &.active {
-    background: $primary;
     color: white;
 
     &:nth-child(1) {
+      background: $primary;
       // border-bottom-left-radius: 0px;
       // border-bottom-right-radius: 0px;
       // border-top-right-radius: 9px;
@@ -66,6 +66,12 @@ export default {
       border-bottom-right-radius: 0px;
       border-bottom-left-radius: 9px;
       border-top-left-radius: 9px;
+    }
+    &:nth-child(2) {
+      background: #E8A200;
+    }
+    &:nth-child(3) {
+      background: #2A2D34;
     }
     &:nth-last-child(1) {
       // border-bottom-left-radius: 9px;

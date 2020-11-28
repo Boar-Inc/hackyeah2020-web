@@ -18,7 +18,7 @@
         </vl-layer-vector> -->
 
         <template v-if="layers.boars">
-          <MapPoint v-for="p in points" :key="p.id" :pos="[p.location.coordinates[0], p.location.coordinates[1]]" src="boar.png" :scale=".1" />
+          <MapPoint v-for="p in points" :key="p.id" :pos="[p.location.coordinates[0], p.location.coordinates[1]]" :src="`pin-${p.condition}.png`" :scale=".08" />
         </template>
 
         <vl-geoloc @update:position="onGeoLoc">
@@ -49,40 +49,6 @@ export default {
     return {
       zoom: 7,
       rotation: 0,
-      geo: [
-        {
-          type: 'Feature',
-          id: 1,
-          geometry: {
-            type: 'Point',
-            coordinates: [19.615410156250018, 51.82268758254099],
-          },
-        },
-        {
-          type: 'Feature',
-          id: 2,
-          geometry: {
-            type: 'Point',
-            coordinates: [2159833.468576233, 6586155.512946144],
-          },
-        },
-        {
-          type: 'Feature',
-          id: 3,
-          geometry: {
-            type: 'Point',
-            coordinates: [2159833.468576233, 6586155.512946144],
-          },
-        },
-        {
-          type: 'Feature',
-          id: 3,
-          geometry: {
-            type: 'Point',
-            coordinates: [2159833.468576233, 6586155.512946144],
-          },
-        }
-      ]
     }
   },
   methods: {
