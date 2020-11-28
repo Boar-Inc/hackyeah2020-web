@@ -26,6 +26,7 @@
           v-if="layers.heatmap"
           :radius="10"
           render-mode="image"
+          :z-index="999"
         >
           <vl-source-vector :features="heatmap" />
         </vl-layer-heatmap>

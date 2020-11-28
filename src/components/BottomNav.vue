@@ -17,7 +17,6 @@
           <IconLabel icon="bx-target-lock" class="icon-btn target-lock" :class="[isCentered && 'active']" @click.native="$emit('recenter')" />
           <div class="layers-btn-wrap">
             <div v-show="openLayersTooltip" class="layers-tooltip">
-              <div class="layer-square layer-satellite" :class="[layers.satellite && 'active']" @click="updateLayers({satellite: !layers.satellite})" />
               <div class="layer-square layer-gminy" :class="[layers.gminy && 'active']" @click="updateLayers({gminy: !layers.gminy})">
                 <!-- gminy -->
               </div>

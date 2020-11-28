@@ -23,7 +23,7 @@
       <ul>
         <li>Nie wolno pozostawiać żadnych odpadków żywnościowych</li>
         <li>Należy powstrzymać się od wywoływania hałasu, który powoduje płoszenie dzików (w tym używania sprzętów lub pojazdów powodujących hałas)</li>
-        <li>Nie nalezy spuszczać psów ze smyczy.</li>
+        <li>Nie należy spuszczać psów ze smyczy.</li>
       </ul>
     </div>
   </div>
@@ -42,8 +42,8 @@ export default {
 <style lang="scss" scoped>
 .corner {
   position: sticky;
-  top: 10px;
-  padding-right: 10px;
+  top: 13px;
+  padding-right: 13px;
   text-align: right;
   display: flex;
   justify-content: flex-end;

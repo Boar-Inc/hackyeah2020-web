@@ -8,6 +8,11 @@
       @recenter="center = [...geoloc]"
       @submit="x => points = [...points, x]"
     />
+    <nuxt-link to="/raporty" class="raports-btn">
+      <IconLabel icon="bx-clipboard">
+        Raporty
+      </IconLabel>
+    </nuxt-link>
     <InfoPanel />
     <Map :points.sync="points" :picking="picking" :center.sync="center" :geoloc.sync="geoloc" :layers.sync="layers" />
   </div>
@@ -41,6 +46,17 @@ export default {
 }
 </script>
 
-<style lang="sass">
-
+<style lang="scss" scoped>
+.raports-btn {
+  position: fixed;
+  right: 100px;
+  top: 10px;
+  z-index: 999999999;
+  background: black;
+  border-radius: 100px;
+  font-size: 1.2rem;
+  font-family: $display-stack;
+  color: white;
+  padding: .4em .8em;
+}
 </style>
