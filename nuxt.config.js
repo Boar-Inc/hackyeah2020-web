@@ -13,7 +13,7 @@ module.exports = {
   ** See https://nuxtjs.org/api/configuration-target
   */
   telemetry: false,
-  target: 'static',
+  target: 'server',
   /*
   ** Headers of the page
   ** See https://nuxtjs.org/api/configuration-head

@@ -94,6 +94,7 @@ export default {
       });
       this.isRemoved = true;
       this.$emit('remove', this.point.id);
+      this.$store.commit('user/removeSighting', this.point.id);
     }
   },
   watch: {

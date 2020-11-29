@@ -3,6 +3,14 @@
     <div class="corner" @click="open = !open">
       <IconLabel :icon="open ? 'bx-x' : 'bxs-info-circle'" />
     </div>
+    <div class="submit-count">
+      <IconLabel icon="bxs-star">
+        Liczba twoich zgłoszeń: {{submitCount}}<br>
+        <template v-if="submitCount > 1">
+          Dziękujemy!
+        </template>
+      </IconLabel>
+    </div>
     <div class="text">
       <h1>Czym jest ASF?</h1>
       <p>Afrykański pomór świń (African Swine Fever - ASF) to szybko szerząca się, zakaźna choroba wirusowa, na którą podatne są świnie domowe , świniodziki oraz dziki. W przypadku wystąpienia ASF w stadzie dochodzi do dużych spadków w produkcji: zakażenie przebiega powoli i obejmuje znaczny odsetek zwierząt w stadzie, przy czym śmiertelność zwierząt sięga nawet 100%. Okres inkubacji choroby wynosi 15 dni.</p>
@@ -34,6 +42,11 @@ export default {
   data() {
     return {
       open: false
+    }
+  },
+  computed: {
+    submitCount() {
+      return this.$store.state.user.sightings.length
     }
   }
 }
@@ -87,8 +100,8 @@ export default {
 h1 {
   font-size: 1.8rem;
   margin-bottom: 15px;
-  margin-top: 40px;
   font-weight: 600;
+  margin-top: 40px;
 }
 p + p, ol, ul {
   margin-top: 10px;
@@ -98,5 +111,15 @@ ol li {
 }
 ul li {
   list-style: disc;
+}
+.submit-count {
+  padding: 15px 20px;
+  color: black;
+  background: white;
+  margin-top: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
+  font-size: 1.3rem;
+  border-radius: 3px;
 }
 </style>
