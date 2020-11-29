@@ -1,6 +1,6 @@
 <template>
   <div class="numberinput">
-    <IconLabel icon="bx-minus" @click.native="$emit('update:val', val-1)" />
+    <IconLabel icon="bx-minus" @click.native="val > 1 && $emit('update:val', val-1)" />
     <div class="val">
       {{val}}
     </div>

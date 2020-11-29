@@ -78,7 +78,8 @@ export default {
       type: Array
     },
     geoloc: null,
-    layers: Object
+    layers: Object,
+    gminyloading: Boolean
   },
   data() {
     return {
@@ -155,14 +156,19 @@ export default {
         }
     },
     onGeoLoc(x) {
-      if (!this.geoloc) this.$emit('update:center', x);
+      if (!this.geoloc) {
+        this.$emit('update:center', x);
+        this.$emit('update:layers', {...this.layers, heatmap: false, boars: true});
+        this.zoom = 13;
+      }
       this.$emit('update:geoloc', x);
-      this.$emit('update:layers', {...this.layers, heatmap: false, boars: true});
-      this.zoom = 13;
     },
     async getGminy() {
-      if (!this.gminy)
+      if (!this.gminy) {
+        this.$emit('update:gminyloading', true);
         this.gminy = (await (await fetch('/gminy.json')).json()).geometry.map(x => ({type: 'Feature', geometry: x}));
+        this.$emit('update:gminyloading', false);
+      }
     },
     onMapPointerMove({pixel}) {
       const hitFeature = this.$refs.map.forEachFeatureAtPixel(pixel, feature => feature);
@@ -251,6 +257,13 @@ export default {
   }
   @include tablet-up {
     // display:
+  }
+  @media print {
+    display: none
+  }
+  display: none;
+  @include tablet-up {
+    display: block;
   }
 }
 </style>

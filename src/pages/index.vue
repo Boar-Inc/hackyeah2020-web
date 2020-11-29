@@ -5,6 +5,7 @@
       :is-centered="isCentered"
       :pos="center"
       :layers.sync="layers"
+      :gminyloading="gminyLoading"
       @recenter="center = [...geoloc]"
       @submit="x => points = [...points, x]"
     />
@@ -14,7 +15,14 @@
       </IconLabel>
     </nuxt-link>
     <InfoPanel />
-    <Map :points.sync="points" :picking="picking" :center.sync="center" :geoloc.sync="geoloc" :layers.sync="layers" />
+    <Map
+      :points.sync="points"
+      :picking="picking"
+      :center.sync="center"
+      :geoloc.sync="geoloc"
+      :layers.sync="layers"
+      :gminyloading.sync="gminyLoading"
+    />
   </div>
 </template>
 
@@ -31,7 +39,8 @@ export default {
         heatmap: true,
         boars: false,
         gminy: false
-      }
+      },
+      gminyLoading: false
     }
   },
   async fetch() {
@@ -58,5 +67,8 @@ export default {
   font-family: $display-stack;
   color: white;
   padding: .4em .8em;
+   @media print {
+     display: none;
+   }
 }
 </style>

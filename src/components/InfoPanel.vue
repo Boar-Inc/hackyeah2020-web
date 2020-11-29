@@ -6,7 +6,7 @@
     <div class="submit-count">
       <IconLabel icon="bxs-star">
         Liczba twoich zgłoszeń: {{submitCount}}<br>
-        <template v-if="submitCount > 1">
+        <template v-if="submitCount > 0">
           Dziękujemy!
         </template>
       </IconLabel>
@@ -33,6 +33,10 @@
         <li>Należy powstrzymać się od wywoływania hałasu, który powoduje płoszenie dzików (w tym używania sprzętów lub pojazdów powodujących hałas)</li>
         <li>Nie należy spuszczać psów ze smyczy.</li>
       </ul>
+      <h1>Zakaźliwość</h1>
+      <p>Śmierć dzika nie oznacza, że zwłoki nie mogą stanowić źródła zakażenia dla innych dzików</p>
+      <p>Wirus jest bardzo odporny na działanie czynników środowiskowych (np. temperatury). Podczas pory zimowej szczątki dzika mogą pozostawać zakaźne przez 4 miesiące</p>
+      <p>w ziemi zanieczyszczonej krwią zawierającą wirus ASFV może on przeżyć nawet przez kilka miesięcy (w zimie znacznie dłużej niż w lecie)</p>
     </div>
   </div>
 </template>
@@ -77,7 +81,7 @@ export default {
   background: black;
   color: white;
   z-index: 9999999999999999;
-  clip-path: circle(80px at 100% 0%);
+  clip-path: circle(50px at calc(100% - 22px) calc(0% + 20px));
   transition: .4s all ease-in-out;
   padding-bottom: 50px;
 

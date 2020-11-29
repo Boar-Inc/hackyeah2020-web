@@ -18,7 +18,7 @@
           <div class="layers-btn-wrap">
             <div v-show="openLayersTooltip" class="layers-tooltip">
               <div class="layer-square layer-gminy" :class="[layers.gminy && 'active']" @click="updateLayers({gminy: !layers.gminy})">
-                <!-- gminy -->
+                <IconLabel v-show="gminyloading" icon="bx-loader-alt bx-spin" />
               </div>
               <div class="layer-square layer-heatmap" :class="[layers.heatmap && 'active']" @click="updateLayers({boars: false, heatmap: true})" />
               <div class="layer-square layer-boars" :class="[layers.boars && 'active']" @click="updateLayers({boars: true, heatmap: false})" />
@@ -84,7 +84,8 @@ export default {
     picking: Boolean,
     pos: Array,
     isCentered: Boolean,
-    layers: Object
+    layers: Object,
+    gminyloading: Boolean
   },
   data() {
     return {
@@ -106,6 +107,9 @@ export default {
   computed: {
     storedRequests() {
       return this.$store.state.user.requests;
+    },
+    watchIsOnline() {
+      return this.$nuxt.isOnline
     }
   },
   methods: {
@@ -122,7 +126,7 @@ export default {
       formData.append('amount', +this.amount);
       if (this.files)
         formData.append('image', this.files[0]);
-      if (this.$nuxt.isOnline) {
+      if (this.watchIsOnline) {
         let point = null;
         try {
           this.isSubmitting = true;
@@ -204,7 +208,7 @@ export default {
     }
   },
   watch: {
-    '$nuxt.isOnline': {
+    watchIsOnline: {
       async handler(val) {
         if (process.client) {
           if (val) {
@@ -410,11 +414,11 @@ button.send {
   box-shadow: 0 0 2px black;
   position: relative;
   @include flex-center(vh);
-  padding-top: 20px;
-  font-size: 1rem;
+  // padding-top: 20px;
+  font-size: 4.1rem;
+  color: $primary;
   font-family: $display-stack;
-  font-weight: 600;
-  text-shadow: 1px 1px 2px white;
+  // text-shadow: 1px 1px 2px black;
 
   & + & {
     margin-top: 10px;
